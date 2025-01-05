@@ -11,7 +11,7 @@ import static org.zwobble.precisely.Matchers.equalTo;
 public class SourceCharacterIteratorTests {
     @Test
     public void emptyStringIsImmediatelyAtEnd() {
-        var iterator = SourceCharacterIterator.from("");
+        var iterator = sourceCharacterIterator("");
 
         var result = iterator.isEnd();
 
@@ -20,7 +20,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void nonEmptyStringIsAtEndAfterSkippingAllCharacters() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
 
         assertThat(iterator.isEnd(), equalTo(false));
 
@@ -38,7 +38,7 @@ public class SourceCharacterIteratorTests {
     }
     @Test
     public void emptyStringImmediatelyHasZeroRemainingCharacters() {
-        var iterator = SourceCharacterIterator.from("");
+        var iterator = sourceCharacterIterator("");
 
         var result = iterator.remaining();
 
@@ -47,7 +47,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void nonEmptyStringRemainingDecrementsWithEachSkippedCharacter() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
 
         assertThat(iterator.remaining(), equalTo(3));
 
@@ -66,7 +66,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void peekReturnsCurrentCharacter() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
 
         assertThat(iterator.peek(), equalTo((int)'a'));
 
@@ -79,7 +79,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void peekReturnsMinusOneAtEnd() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
 
         iterator.skip();
         iterator.skip();
@@ -93,7 +93,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void peekSequenceCanReturnSubSequenceAtStart() {
-        var iterator = SourceCharacterIterator.from("abcdef");
+        var iterator = sourceCharacterIterator("abcdef");
 
         var result = iterator.peekSequence(3);
 
@@ -102,7 +102,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void peekSequenceCanReturnSubSequenceInMiddle() {
-        var iterator = SourceCharacterIterator.from("abcdef");
+        var iterator = sourceCharacterIterator("abcdef");
         iterator.skip();
 
         var result = iterator.peekSequence(3);
@@ -112,7 +112,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void peekSequenceCanReturnSubSequenceAtEnd() {
-        var iterator = SourceCharacterIterator.from("abcd");
+        var iterator = sourceCharacterIterator("abcd");
         iterator.skip();
 
         var result = iterator.peekSequence(3);
@@ -122,7 +122,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void whenPeekSequenceLengthIsGreaterThanRemainingThenErrorIsThrown() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
         iterator.skip();
 
         assertThrows(
@@ -133,7 +133,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void canSkipMultipleCharacters() {
-        var iterator = SourceCharacterIterator.from("abcdef");
+        var iterator = sourceCharacterIterator("abcdef");
 
         iterator.skip(3);
         assertThat(iterator.peek(), equalTo((int)'d'));
@@ -144,7 +144,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void whenNotAtEndThenCharacterSourceRangeCoversSingleCharacter() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
         iterator.skip();
 
         var result = iterator.characterSourceRange();
@@ -155,7 +155,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void whenAtEndThenCharacterSourceRangeCoversZeroCharacters() {
-        var iterator = SourceCharacterIterator.from("abc");
+        var iterator = sourceCharacterIterator("abc");
         iterator.skip(3);
 
         var result = iterator.characterSourceRange();
@@ -166,7 +166,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void sourceRangeCanBeConstructedFromPosition() {
-        var iterator = SourceCharacterIterator.from("abcdef");
+        var iterator = sourceCharacterIterator("abcdef");
         iterator.skip(2);
         var start = iterator.position();
 
@@ -181,7 +181,7 @@ public class SourceCharacterIteratorTests {
 
     @Test
     public void canSetPositionOfIterator() {
-        var iterator = SourceCharacterIterator.from("abcdef");
+        var iterator = sourceCharacterIterator("abcdef");
         iterator.skip(2);
 
         var position = iterator.position();
@@ -191,5 +191,10 @@ public class SourceCharacterIteratorTests {
 
         iterator.position(position);
         assertThat(iterator.peek(), equalTo((int)'c'));
+    }
+
+    public static SourceCharacterIterator sourceCharacterIterator(String text) {
+        var sourceText = SourceText.fromString("<string>", text);
+        return sourceText.characterIterator();
     }
 }

@@ -3,15 +3,11 @@ package org.zwobble.sourcetext;
 import java.nio.CharBuffer;
 
 public class SourceCharacterIterator {
-    public static SourceCharacterIterator from(String text) {
-        return new SourceCharacterIterator(text);
-    }
-
     private final SourceText sourceText;
     private int characterIndex;
 
-    private SourceCharacterIterator(String text) {
-        this.sourceText = SourceText.fromString(text);
+    SourceCharacterIterator(SourceText sourceText) {
+        this.sourceText = sourceText;
         this.characterIndex = 0;
     }
 

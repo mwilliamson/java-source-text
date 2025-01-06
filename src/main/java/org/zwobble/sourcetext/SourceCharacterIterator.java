@@ -1,7 +1,5 @@
 package org.zwobble.sourcetext;
 
-import java.nio.CharBuffer;
-
 public class SourceCharacterIterator {
     private final SourceText sourceText;
     private int characterIndex;
@@ -27,8 +25,8 @@ public class SourceCharacterIterator {
         return this.sourceText.getCharacter(this.characterIndex);
     }
 
-    public CharBuffer peekSequence(int length) {
-        return this.sourceText.charBuffer(
+    public CharSequence peekSequence(int length) {
+        return this.sourceText.charSequence(
             this.characterIndex,
             this.characterIndex + length
         );

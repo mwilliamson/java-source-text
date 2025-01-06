@@ -19,7 +19,7 @@ public class SourceText {
         return this.name;
     }
 
-    public CharBuffer charBuffer(
+    public CharSequence charSequence(
         int startCharacterIndex,
         int endCharacterIndex
     ) {

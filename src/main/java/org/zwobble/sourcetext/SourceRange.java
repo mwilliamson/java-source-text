@@ -1,7 +1,5 @@
 package org.zwobble.sourcetext;
 
-import java.nio.CharBuffer;
-
 public class SourceRange {
     private final SourceText sourceText;
     private final SourcePosition start;
@@ -17,8 +15,8 @@ public class SourceRange {
         this.end = end;
     }
 
-    public CharBuffer charBuffer() {
-        return sourceText.charBuffer(
+    public CharSequence charSequence() {
+        return sourceText.charSequence(
             start.characterIndex(),
             end.characterIndex()
         );
@@ -63,7 +61,7 @@ public class SourceRange {
                     lineEndCharacterIndex++;
                 }
                 return context(
-                    this.sourceText.charBuffer(
+                    this.sourceText.charSequence(
                         lineStartCharacterIndex,
                         lineEndCharacterIndex
                     ),
@@ -85,7 +83,7 @@ public class SourceRange {
         }
 
         return context(
-            this.sourceText.charBuffer(
+            this.sourceText.charSequence(
                 lineStartCharacterIndex,
                 this.sourceText.characterLength()
             ),
@@ -95,7 +93,7 @@ public class SourceRange {
         );
     }
 
-    private String context(CharBuffer line, int lineIndex, int columnIndex, int length) {
+    private String context(CharSequence line, int lineIndex, int columnIndex, int length) {
         var lineNumber = lineIndex + 1;
         var columnNumber = columnIndex + 1;
         return this.sourceText.name() + ":" + lineNumber + ":" + columnNumber + "\n" + line + "\n" + " ".repeat(columnIndex) + "^".repeat(length);

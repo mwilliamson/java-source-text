@@ -44,4 +44,8 @@ public class SourceText {
     public SourceCharacterIterator characterIterator() {
         return new SourceCharacterIterator(this);
     }
+
+    public SourcePosition characterPosition(int characterIndex) {
+        return new SourcePosition(this, characterIndex);
+    }
 }

@@ -48,13 +48,13 @@ public class SourceCharacterIterator {
     public SourceRange characterSourceRange() {
         var end = isEnd()
             ? position()
-            : new SourcePosition(this.characterIndex + 1);
+            : this.sourceText.characterPosition(this.characterIndex + 1);
 
-        return new SourceRange(sourceText, position(), end);
+        return position().to(end);
     }
 
     public SourcePosition position() {
-        return new SourcePosition(this.characterIndex);
+        return this.sourceText.characterPosition(this.characterIndex);
     }
 
     public void position(SourcePosition position) {

@@ -109,10 +109,11 @@ public class SourceRangeTests {
                        ^"""
             )
         ).map(testCase -> DynamicTest.dynamicTest(testCase.name, () -> {
+            var sourceText = SourceText.fromString("<filename>", testCase.contents);
             var sourceRange = new SourceRange(
-                SourceText.fromString("<filename>", testCase.contents),
-                new SourcePosition(testCase.characterIndexStart),
-                new SourcePosition(testCase.characterIndexEnd())
+                sourceText,
+                sourceText.characterPosition(testCase.characterIndexStart),
+                sourceText.characterPosition(testCase.characterIndexEnd())
             );
 
             var result = sourceRange.describe();
@@ -123,16 +124,17 @@ public class SourceRangeTests {
 
     @Test
     public void whenSourceIsZeroLengthThenPointerPointsToNextCharacter() {
-        var sourceRange = new SourceRange(
-            SourceText.fromString(
-                "<filename>",
-                """
+        var sourceText = SourceText.fromString(
+            "<filename>",
+            """
                 abcdef
                 ghijkl
                 mnopqr"""
-            ),
-            new SourcePosition(9),
-            new SourcePosition(9)
+        );
+        var sourceRange = new SourceRange(
+            sourceText,
+            sourceText.characterPosition(9),
+            sourceText.characterPosition(9)
         );
 
         var result = sourceRange.describe();
@@ -145,16 +147,17 @@ public class SourceRangeTests {
 
     @Test
     public void whenSourceIsOneCharacterThenPointerPointsToCharacter() {
-        var sourceRange = new SourceRange(
-            SourceText.fromString(
-                "<filename>",
-                """
+        var sourceText = SourceText.fromString(
+            "<filename>",
+            """
                 abcdef
                 ghijkl
                 mnopqr"""
-            ),
-            new SourcePosition(9),
-            new SourcePosition(9)
+        );
+        var sourceRange = new SourceRange(
+            sourceText,
+            sourceText.characterPosition(9),
+            sourceText.characterPosition(9)
         );
 
         var result = sourceRange.describe();
@@ -167,16 +170,17 @@ public class SourceRangeTests {
 
     @Test
     public void whenSourceIsMultipleCharactersOnSameLineThenPointerPointsToAllCharacters() {
-        var sourceRange = new SourceRange(
-            SourceText.fromString(
-                "<filename>",
-                """
+        var sourceText = SourceText.fromString(
+            "<filename>",
+            """
                 abcdef
                 ghijkl
                 mnopqr"""
-            ),
-            new SourcePosition(9),
-            new SourcePosition(12)
+        );
+        var sourceRange = new SourceRange(
+            sourceText,
+            sourceText.characterPosition(9),
+            sourceText.characterPosition(12)
         );
 
         var result = sourceRange.describe();
@@ -190,16 +194,17 @@ public class SourceRangeTests {
     @Test
     public void whenSourceIsMultipleCharactersOnMultipleLinesThenPointerPointsToFirstCharacter() {
         // TODO: show multiple lines
-        var sourceRange = new SourceRange(
-            SourceText.fromString(
-                "<filename>",
-                """
+        var sourceText = SourceText.fromString(
+            "<filename>",
+            """
                 abcdef
                 ghijkl
                 mnopqr"""
-            ),
-            new SourcePosition(9),
-            new SourcePosition(14)
+        );
+        var sourceRange = new SourceRange(
+            sourceText,
+            sourceText.characterPosition(9),
+            sourceText.characterPosition(14)
         );
 
         assertThat(sourceRange.describe(), equalTo("""

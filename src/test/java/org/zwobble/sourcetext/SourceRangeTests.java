@@ -212,4 +212,68 @@ public class SourceRangeTests {
             ghijkl
               ^"""));
     }
+
+    @Test
+    public void rangesWithSameStartAndEndAreEqual() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var start = sourceText.characterPosition(1);
+        var end = sourceText.characterPosition(3);
+        var sourceRange1 = start.to(end);
+        var sourceRange2 = start.to(end);
+
+        var result = sourceRange1.equals(sourceRange2);
+        var hashCode1 = sourceRange1.hashCode();
+        var hashCode2 = sourceRange2.hashCode();
+
+        assertThat(result, equalTo(true));
+        assertThat(hashCode1, equalTo(hashCode2));
+    }
+
+    @Test
+    public void rangesWithDifferentStartAreNotEqual() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var end = sourceText.characterPosition(3);
+        var sourceRange1 = sourceText.characterPosition(1).to(end);
+        var sourceRange2 = sourceText.characterPosition(2).to(end);
+
+        var result = sourceRange1.equals(sourceRange2);
+
+        assertThat(result, equalTo(false));
+    }
+
+    @Test
+    public void rangesWithDifferentEndAreNotEqual() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var start = sourceText.characterPosition(1);
+        var sourceRange1 = start.to(sourceText.characterPosition(2));
+        var sourceRange2 = start.to(sourceText.characterPosition(3));
+
+        var result = sourceRange1.equals(sourceRange2);
+
+        assertThat(result, equalTo(false));
+    }
+
+    @Test
+    public void rangeIsNotEqualToNull() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var start = sourceText.characterPosition(1);
+        var end = sourceText.characterPosition(3);
+        var sourceRange = start.to(end);
+
+        var result = sourceRange.equals(null);
+
+        assertThat(result, equalTo(false));
+    }
+
+    @Test
+    public void rangeIsNotEqualToOtherType() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var start = sourceText.characterPosition(1);
+        var end = sourceText.characterPosition(3);
+        var sourceRange = start.to(end);
+
+        var result = sourceRange.equals(1);
+
+        assertThat(result, equalTo(false));
+    }
 }

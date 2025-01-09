@@ -1,5 +1,7 @@
 package org.zwobble.sourcetext;
 
+import java.util.Objects;
+
 public class SourceRange {
     private final SourceText sourceText;
     private final SourcePosition start;
@@ -97,5 +99,25 @@ public class SourceRange {
         var lineNumber = lineIndex + 1;
         var columnNumber = columnIndex + 1;
         return this.sourceText.name() + ":" + lineNumber + ":" + columnNumber + "\n" + line + "\n" + " ".repeat(columnIndex) + "^".repeat(length);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+
+        if (!(other instanceof SourceRange otherSourceRange)) {
+            return false;
+        }
+
+        return this.sourceText.equals(otherSourceRange.sourceText) &&
+            this.start.equals(otherSourceRange.start) &&
+            this.end.equals(otherSourceRange.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.sourceText, this.start, this.end);
     }
 }

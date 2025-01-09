@@ -44,6 +44,12 @@ public class SourceRange {
         );
     }
 
+    public SourcePosition characterPosition(int characterIndex) {
+        return this.sourceText.characterPosition(
+            this.start.characterIndex() + characterIndex
+        );
+    }
+
     public String describe() {
         var lineStartCharacterIndex = 0;
         var lineIndex = 0;

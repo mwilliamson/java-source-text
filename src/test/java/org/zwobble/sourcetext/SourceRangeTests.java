@@ -12,6 +12,17 @@ import static org.zwobble.precisely.AssertThat.assertThat;
 import static org.zwobble.precisely.Matchers.equalTo;
 
 public class SourceRangeTests {
+    @Test
+    public void canGetPositionInSourceRangeRelativeToStart() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var result = sourceRange.characterPosition(2);
+
+        assertThat(result, equalTo(sourceText.characterPosition(3)));
+    }
+
     private record TestCase(
         String name,
         String contents,

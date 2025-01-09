@@ -8,12 +8,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.zwobble.precisely.AssertThat.assertThat;
 import static org.zwobble.precisely.Matchers.equalTo;
 
 public class SourceRangeTests {
     @Test
-    public void canGetPositionInSourceRangeRelativeToStart() {
+    public void whenPositionIsNegativeThenCharacterPositionThrowsException() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var error = assertThrows(
+            IllegalArgumentException.class,
+            () -> sourceRange.characterPosition(-1)
+        );
+
+        assertThat(error.getMessage(), equalTo("Character index -1 not in range"));
+    }
+
+    @Test
+    public void canGetPositionAtStartOfSourceRange() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var result = sourceRange.characterPosition(0);
+
+        assertThat(result, equalTo(sourceText.characterPosition(1)));
+    }
+
+    @Test
+    public void canGetPositionInMiddleOfSourceRange() {
         var sourceText = SourceText.fromString("<string>", "abcdef");
         var sourceRange = sourceText.characterPosition(1)
             .to(sourceText.characterPosition(5));
@@ -21,6 +47,31 @@ public class SourceRangeTests {
         var result = sourceRange.characterPosition(2);
 
         assertThat(result, equalTo(sourceText.characterPosition(3)));
+    }
+
+    @Test
+    public void canGetPositionAtEndOfSourceRange() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var result = sourceRange.characterPosition(4);
+
+        assertThat(result, equalTo(sourceText.characterPosition(5)));
+    }
+
+    @Test
+    public void whenPositionIsBeyondRangeThenCharacterPositionThrowsException() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var error = assertThrows(
+            IllegalArgumentException.class,
+            () -> sourceRange.characterPosition(5)
+        );
+
+        assertThat(error.getMessage(), equalTo("Character index 5 not in range"));
     }
 
     private record TestCase(

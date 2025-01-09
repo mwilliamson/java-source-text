@@ -45,9 +45,20 @@ public class SourceRange {
     }
 
     public SourcePosition characterPosition(int characterIndex) {
+        if (characterIndex < 0 || characterIndex > this.characterLength()) {
+            throw new IllegalArgumentException(String.format(
+                "Character index %s not in range",
+                characterIndex
+            ));
+        }
+
         return this.sourceText.characterPosition(
             this.start.characterIndex() + characterIndex
         );
+    }
+
+    private int characterLength() {
+        return this.end.characterIndex() - this.start.characterIndex();
     }
 
     public String describe() {

@@ -276,4 +276,16 @@ public class SourceRangeTests {
 
         assertThat(result, equalTo(false));
     }
+
+    @Test
+    public void rangeToStringIncludesSourceTextNameAndStartAndEnd() {
+        var sourceText = SourceText.fromString("<string>", "abc");
+        var start = sourceText.characterPosition(1);
+        var end = sourceText.characterPosition(3);
+        var sourceRange = start.to(end);
+
+        var result = sourceRange.toString();
+
+        assertThat(result, equalTo("<string>:1:2:1:4"));
+    }
 }

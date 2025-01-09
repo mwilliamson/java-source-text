@@ -120,4 +120,66 @@ public class SourceRange {
     public int hashCode() {
         return Objects.hash(this.sourceText, this.start, this.end);
     }
+
+    @Override
+    public String toString() {
+        var lineRange = this.toLineRange();
+
+        return String.format(
+            "%s:%s:%s:%s:%s",
+            this.sourceText.name(),
+            lineRange.startLineIndex + 1,
+            lineRange.startColumnIndex + 1,
+            lineRange.endLineIndex + 1,
+            lineRange.endColumnIndex + 1
+        );
+    }
+
+    private SourceLineRange toLineRange() {
+        var lineIndex = 0;
+        var columnIndex = 0;
+        var startLineIndex = -1;
+        var startColumnIndex = -1;
+        var endLineIndex = -1;
+        var endColumnIndex = -1;
+
+        for (
+            var characterIndex = 0;
+            characterIndex <= this.sourceText.characterLength();
+            characterIndex++
+        ) {
+            if (characterIndex == this.start.characterIndex()) {
+                startLineIndex = lineIndex;
+                startColumnIndex = columnIndex;
+            }
+
+            if (characterIndex == this.end.characterIndex() || characterIndex == this.sourceText.characterLength()) {
+                endLineIndex = lineIndex;
+                endColumnIndex = columnIndex;
+                break;
+            }
+
+            if (this.sourceText.getCharacter(characterIndex) == '\n') {
+                lineIndex += 1;
+                columnIndex = 0;
+            } else {
+                columnIndex += 1;
+            }
+        }
+
+        return new SourceLineRange(
+            startLineIndex,
+            startColumnIndex,
+            endLineIndex,
+            endColumnIndex
+        );
+    }
+
+    private record SourceLineRange(
+        int startLineIndex,
+        int startColumnIndex,
+        int endLineIndex,
+        int endColumnIndex
+    ) {
+    }
 }

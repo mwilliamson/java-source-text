@@ -62,4 +62,14 @@ public class SourcePositionTests {
 
         assertThat(result, equalTo(false));
     }
+
+    @Test
+    public void positionToStringIncludesSourceTextNameAndLineAndColumnNumbers() {
+        var sourceText = SourceText.fromString("<string>", "ab\ncdefgh\nij");
+        var position = sourceText.characterPosition(5);
+
+        var result = position.toString();
+
+        assertThat(result, equalTo("<string>:2:3"));
+    }
 }

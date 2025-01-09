@@ -57,7 +57,7 @@ public class SourceRange {
         );
     }
 
-    private int characterLength() {
+    public int characterLength() {
         return this.end.characterIndex() - this.start.characterIndex();
     }
 

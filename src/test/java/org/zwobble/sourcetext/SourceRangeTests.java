@@ -14,6 +14,17 @@ import static org.zwobble.precisely.Matchers.equalTo;
 
 public class SourceRangeTests {
     @Test
+    public void rangeHasLength() {
+        var sourceText = SourceText.fromString("<string>", "abcdef");
+        var sourceRange = sourceText.characterPosition(1)
+            .to(sourceText.characterPosition(5));
+
+        var result = sourceRange.characterLength();
+
+        assertThat(result, equalTo(4));
+    }
+
+    @Test
     public void whenPositionIsNegativeThenCharacterPositionThrowsException() {
         var sourceText = SourceText.fromString("<string>", "abcdef");
         var sourceRange = sourceText.characterPosition(1)

@@ -86,7 +86,7 @@ public class SourceRange {
                     ),
                     lineIndex,
                     columnIndex,
-                    lineEndCharacterIndex <= this.end.characterIndex()
+                    lineEndCharacterIndex < this.end.characterIndex()
                         ? 1
                         : Math.max(this.end.characterIndex() - this.start.characterIndex(), 1)
                 );

@@ -265,6 +265,29 @@ public class SourceRangeTests {
     }
 
     @Test
+    public void whenSourceIsEntireLineThenPointerPointsToAllCharacters() {
+        var sourceText = SourceText.fromString(
+            "<filename>",
+            """
+                abcdef
+                ghijkl
+                mnopqr"""
+        );
+        var sourceRange = new SourceRange(
+            sourceText,
+            sourceText.characterPosition(7),
+            sourceText.characterPosition(13)
+        );
+
+        var result = sourceRange.describe();
+
+        assertThat(result, equalTo("""
+            <filename>:2:1
+            ghijkl
+            ^^^^^^"""));
+    }
+
+    @Test
     public void whenSourceIsMultipleCharactersOnMultipleLinesThenPointerPointsToFirstCharacter() {
         // TODO: show multiple lines
         var sourceText = SourceText.fromString(

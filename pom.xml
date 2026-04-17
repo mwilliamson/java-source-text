@@ -7,6 +7,7 @@
   <groupId>org.zwobble.source-text</groupId>
   <artifactId>zwobble-source-text</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
   <name>zwobble-source-text</name>
   <url>https://github.com/mwilliamson/java-source-text</url>

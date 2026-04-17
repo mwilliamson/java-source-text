@@ -40,13 +40,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -66,9 +59,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.mwilliamson</groupId>
-      <artifactId>java-precisely</artifactId>
-      <version>d0a4cb17bdec754a3d061ce6bc481bf9978d90ac</version>
+      <groupId>org.zwobble.precisely</groupId>
+      <artifactId>precisely</artifactId>
+      <version>0.1.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -72,4 +72,19 @@ public class SourcePositionTests {
 
         assertThat(result, equalTo("<string>:2:3"));
     }
+
+    @Test
+    public void whenSourceTextIsDerivedThenPositionsAreMappedInToString() {
+        var originalSourceText = SourceText.fromString("<filename>", "abc\\tdef");
+        var derivedSourceText = SourceText.derived(
+            originalSourceText,
+            "abc\tdef",
+            derivedCharacterIndex -> derivedCharacterIndex < 3 ? derivedCharacterIndex : derivedCharacterIndex + 1
+        );
+        var position = derivedSourceText.characterPosition(6);
+
+        var result = position.toString();
+
+        assertThat(result, equalTo("<filename>:1:8"));
+    }
 }

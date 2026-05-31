@@ -310,6 +310,26 @@ public class SourceRangeTests {
     }
 
     @Test
+    public void whenSourceTextIsDerivedThenPositionsAreMappedInDescription() {
+        var originalSourceText = SourceText.fromString("<filename>", "abc\\tdef");
+        var derivedSourceText = SourceText.derived(
+            originalSourceText,
+            "abc\tdef",
+            derivedCharacterIndex -> derivedCharacterIndex < 3 ? derivedCharacterIndex : derivedCharacterIndex + 1
+        );
+        var start = derivedSourceText.characterPosition(2);
+        var end = derivedSourceText.characterPosition(6);
+        var sourceRange = start.to(end);
+
+        var result = sourceRange.describe();
+
+        assertThat(result, equalTo("""
+        <filename>:1:3
+        abc\\tdef
+          ^^^^^"""));
+    }
+
+    @Test
     public void rangesWithSameStartAndEndAreEqual() {
         var sourceText = SourceText.fromString("<string>", "abc");
         var start = sourceText.characterPosition(1);

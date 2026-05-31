@@ -62,6 +62,13 @@ public class SourceRange {
     }
 
     public String describe() {
+        var parentSourceText = this.sourceText.parentSourceText();
+        if (parentSourceText.isPresent()) {
+            var start = parentSourceText.get().originalPosition(this.start);
+            var end = parentSourceText.get().originalPosition(this.end);
+            return start.to(end).describe();
+        }
+
         var lineStartCharacterIndex = 0;
         var lineIndex = 0;
         var columnIndex = 0;

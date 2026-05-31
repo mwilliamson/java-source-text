@@ -44,6 +44,11 @@ public class SourcePosition {
 
     @Override
     public String toString() {
+        var parentSourceText = this.sourceText.parentSourceText();
+        if (parentSourceText.isPresent()) {
+            return parentSourceText.get().originalPosition(this).toString();
+        }
+
         var lineIndex = 0;
         var columnIndex = 0;
 

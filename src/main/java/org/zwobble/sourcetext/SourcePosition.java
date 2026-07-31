@@ -15,6 +15,10 @@ public class SourcePosition {
         this.characterIndex = characterIndex;
     }
 
+    public SourceText sourceText() {
+        return sourceText;
+    }
+
     public int characterIndex() {
         return characterIndex;
     }
